@@ -10,7 +10,7 @@ class employee(object):
         if self.experience>5:
             return self.salary*1.2+500
         elif self.experience>2:
-            return self.experience+200
+            return self.salary+200
     def __repr__(self):
         return "%s %s: got salary: %s"%(self.first_name,self.second_name,self.get_salary())
 
@@ -48,12 +48,16 @@ class manager(employee):
         self.devel_t=devel_t
         self.design_t=design_t
     def get_salary(self):
-        if self.design_t+self.devel_t>10:
+        if len(self.design_t)+len(self.devel_t)>10:
             return super(manager,self).get_salary()+300
-        elif self.design_t+self.devel_t>5:
+        elif len(self.design_t)+len(self.devel_t)>5:
             return super(manager,self).get_salary()+200
-        if self.devel_t>(self.design_t+self.devel_t)/2:
+        if len(self.devel_t)>(len(self.design_t)+len(self.devel_t))/2:
             return super(manager,self).get_salary()*1.1
+
+
+
+"""
 #Simple Entry
 #Managers Information (Mini Database)
 manager_list=["Nikolaienko","Yarosch","Ryrmak"]
@@ -79,4 +83,32 @@ emp=manager(higher_manager_first,higher_manager_second,salary,experience,"Dmytro
 print(emp)
 #check that we have't any double counting
 print(emp.get_salary())
+"""
+manager_list=["Nikolaienko","Yarosch","Ryrmak"]
+manager_dependancy=[["Vladyslav",["A","B"],["a"]],["Oleksiy",["C"],["d","b","c"]],["Maksym",["D","E"],["e"]]]
+#Simple Employee
+first_name="Vasya"
+second_name="Pypkin"
+salary=1000
+experience=7
+higher_manager_first="Nikolaienko"
+# Get information from simple mini database about manager
+higher_manager_second=manager_dependancy[manager_list.index(higher_manager_first)][0]
+dev_t=manager_dependancy[manager_list.index(higher_manager_first)][1]
+des_t=manager_dependancy[manager_list.index(higher_manager_first)][2]
 
+# If we need that all should have manager: we can't create object of top level (First TOP level manager-Director). So, variable of manager should be used like string or any other.
+h_m=manager("Bog","Gesus",10000,1000,"",["Adam","Eva"],["Moisey","Zmey"])
+
+emp1=manager(higher_manager_first,higher_manager_second,salary,experience,h_m,dev_t,des_t)
+emp2=manager(higher_manager_first,higher_manager_second,2000,3,emp1,dev_t,des_t)
+manager_list=[h_m,emp1,emp2]
+emp3=developer(first_name,second_name,1500,2,emp1.first_name,emp1.second_name)
+print(emp3)
+print(emp1)
+print(emp1.get_salary())
+print(emp1.higher_manager.salary)
+print()
+for i in manager_list:
+    print("%s has salary: %s"%( i.first_name, i.get_salary()))
+    
